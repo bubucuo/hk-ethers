@@ -6,12 +6,11 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-// 用 JsonRpcProvider 创建 provider
-// const provider = new JsonRpcProvider("https://cloudflare-eth.com");
-// const provider = new JsonRpcProvider('https://mainnet.infura.io/v3/d41e1cc45b1c4f48a2cd48627efb82c6');
+// create provider via Infura
+// / be sure to set INFURA_URL in your .env file
 const provider = new JsonRpcProvider(process.env.INFURA_URL);
 
-// 合约地址和ABI
+// ABI
 const contractAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const abi = [
   "function name() view returns (string)",
@@ -27,7 +26,7 @@ app.get("/shaoyunApiTest", async (req, res) => {
     const symbol = await contract.symbol();
     const totalSupply = await contract.totalSupply();
 
-    // DAI 是 18 位精度，转为可读的字符串
+    // DAI is 18 decimal places, convert to a readable string
     const formattedSupply = formatUnits(totalSupply, 18);
 
     console.log("Token Name:", name);
